@@ -22,17 +22,17 @@
 
     <!-- Package info -->
     <PropertyGroup>
-        <Product>Spoleto.Delivery library</Product>
+        <Product>Spoleto.RestClient library</Product>
         <Authors>OlegNadymov;Spoleto-Software</Authors>
         <Company>SPOLETO Software Development</Company>
         <PackageIcon>MainIcon.jpg</PackageIcon>
         <PackageProjectUrl>https://spoleto.ru</PackageProjectUrl>
-        <RepositoryUrl>https://github.com/spoleto-software/Spoleto.Delivery</RepositoryUrl>
+        <RepositoryUrl>https://github.com/spoleto-software/Spoleto.RestClient</RepositoryUrl>
         <RepositoryType>GitHub</RepositoryType>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-        <PackageTags>Delivery; Cdek; СДЭК; MasterPost; МастерПост</PackageTags>
+        <PackageTags>RestClient; Rest; Rest-Client; Http; HttpClient</PackageTags>
         <Copyright>Copyright © $([System.DateTime]::Now.Year.ToString())</Copyright>
         <PackageReleaseNotes></PackageReleaseNotes>
         <Version>1.0.0</Version>

@@ -13,9 +13,6 @@ https://github.com/spoleto-software/Spoleto.RestClient
 Begin by installing the package through the [NuGet](https://www.nuget.org/packages/Spoleto.RestClient/) package manager with the command:  
 ``Install-Package Spoleto.RestClient``.
 
-## Getting started
-
-
 ## Features
 
 - **Support for various data formats:** JSON, XML, Binary.

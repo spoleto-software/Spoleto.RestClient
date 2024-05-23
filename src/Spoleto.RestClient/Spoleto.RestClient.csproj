@@ -6,8 +6,16 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <!-- Package info -->
+    <PropertyGroup>
+        <Title>Spoleto.RestClient</Title>
+        <PackageId>Spoleto.RestClient</PackageId>
+        <PackageTags>RestClient; Rest; Rest-Client; Http; HttpClient</PackageTags>
+        <Description>The powerful and flexible REST client (a wrapper around HttpClient) capable of executing requests and handling responses in various formats: JSON, XML and Binary. The client also supports authentication and provides the ability for flexible customization and overriding of base classes.</Description>
+    </PropertyGroup>
+
     <ItemGroup>
-      <PackageReference Include="Spoleto.Common" Version="2.3.22.1303" />
+        <PackageReference Include="Spoleto.Common" Version="2.3.22.1303" />
     </ItemGroup>
 
 </Project>
