@@ -1,4 +1,4 @@
-namespace Spoleto.RestClient.Tests
+﻿namespace Spoleto.RestClient5.Tests
 {
     public class Tests
     {

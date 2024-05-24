@@ -9,6 +9,7 @@ namespace Spoleto.RestClient.Authentication
         private readonly string _tokenType;
 
         private string? _token;
+        private bool _inProcess = false;
 
 
         public DynamicAuthenticator(string tokenType)
@@ -22,29 +23,39 @@ namespace Spoleto.RestClient.Authentication
         {
             if (_token == null)
             {
-                await _semaphore.WaitAsync().ConfigureAwait(false);
-                try
+                if (!_inProcess)
                 {
-                    if (_token == null)
+                    await _semaphore.WaitAsync().ConfigureAwait(false);
+                    try
                     {
-                        // Get a new token:
-                        _token = await GetAuthenticationToken(client, request).ConfigureAwait(false);
+                        if (_token == null)
+                        {
+                            _inProcess = true;
+
+                            // Get a new token:
+                            _token = await GetAuthenticationToken(client).ConfigureAwait(false);
+
+                            _inProcess = false;
+                        }
                     }
-                }
-                finally
-                {
-                    _semaphore.Release();
+                    finally
+                    {
+                        _semaphore.Release();
+                    }
                 }
             }
 
-            request.Headers.Authorization = new AuthenticationHeaderValue(_tokenType, _token);
+            if (_token != null)
+            {
+                request.Headers.Authorization = new AuthenticationHeaderValue(_tokenType, _token);
+            }
         }
 
         public virtual Task<bool> IsExpired(HttpResponseMessage response) => Task.FromResult(response.StatusCode == HttpStatusCode.Unauthorized);
 
         public void SetExpired() => _token = null;
 
-        protected abstract Task<string> GetAuthenticationToken(IRestClient client, HttpRequestMessage request);
+        protected abstract Task<string> GetAuthenticationToken(IRestClient client);
 
         #region IDisposable
         bool _disposed;

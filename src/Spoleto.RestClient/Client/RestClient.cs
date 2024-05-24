@@ -7,7 +7,7 @@ namespace Spoleto.RestClient
     {
         private readonly HttpClient _httpClient;
         private readonly IAuthenticator? _authenticator;
-        private readonly RestClientOptions _options;
+        private readonly RestClientOptions _options;//todo:
         private readonly bool _disposeHttpClient;
 
         public RestClient(HttpClient httpClient, IAuthenticator? authenticator = null, RestClientOptions? options = null, bool disposeHttpClient = false)
