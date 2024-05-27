@@ -5,8 +5,8 @@ namespace Spoleto.RestClient
 {
     public record BinaryRestRequest : RestRequest<byte[]>, IBinaryRestRequest
     {
-        public BinaryRestRequest(string uri, HttpMethod httpMethod = HttpMethod.Get, byte[]? content = null)
-            : base(uri, httpMethod, content)
+        public BinaryRestRequest(string uri, HttpMethod httpMethod = HttpMethod.Get, bool isMultipartFormData = false, byte[]? content = null)
+            : base(uri, httpMethod, isMultipartFormData, content)
         {
         }
 
@@ -14,8 +14,13 @@ namespace Spoleto.RestClient
 
         public override HttpContent GetHttpContent()
         {
-            var content = new ByteArrayContent(Content);
+            HttpContent content = new ByteArrayContent(Content);
             content.Headers.ContentType = MediaTypeHeaderValue.Parse(ContentType);
+
+            if (IsMultipartFormData)
+            {
+                content = new MultipartFormDataContent { { content } };
+            }
 
             return content;
         }

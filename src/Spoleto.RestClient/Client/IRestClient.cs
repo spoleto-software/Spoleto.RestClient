@@ -2,11 +2,11 @@
 {
     public interface IRestClient : IDisposable
     {
-        JsonRestRequest<TObj> CreateJsonRestRequest<TObj>(string uri, HttpMethod httpMethod = HttpMethod.Get, TObj? content = null) where TObj : class;
+        JsonRestRequest<TObj> CreateJsonRestRequest<TObj>(string uri, HttpMethod httpMethod = HttpMethod.Get, bool isMultipartFormData = false, TObj? content = null) where TObj : class;
 
-        XmlRestRequest<TObj> CreateXmlRestRequest<TObj>(string uri, HttpMethod httpMethod = HttpMethod.Get, TObj? content = null) where TObj : class;
+        XmlRestRequest<TObj> CreateXmlRestRequest<TObj>(string uri, HttpMethod httpMethod = HttpMethod.Get, bool isMultipartFormData = false, TObj? content = null) where TObj : class;
 
-        BinaryRestRequest CreateBinaryRestRequest(string uri, HttpMethod httpMethod = HttpMethod.Get, byte[]? content = null);
+        BinaryRestRequest CreateBinaryRestRequest(string uri, HttpMethod httpMethod = HttpMethod.Get, bool isMultipartFormData = false, byte[]? content = null);
 
         Task<TextRestResponse> ExecuteAsStringAsync(RestRequest request, CancellationToken cancellationToken = default);
 

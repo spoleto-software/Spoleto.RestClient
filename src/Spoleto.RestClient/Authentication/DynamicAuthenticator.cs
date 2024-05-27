@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Net.Http.Headers;
+using System.Security.Authentication;
 
 namespace Spoleto.RestClient.Authentication
 {
@@ -53,7 +54,13 @@ namespace Spoleto.RestClient.Authentication
 
         public virtual Task<bool> IsExpired(HttpResponseMessage response) => Task.FromResult(response.StatusCode == HttpStatusCode.Unauthorized);
 
-        public void SetExpired() => _token = null;
+        public void SetExpired()
+        {
+            if (_token == null)
+                throw new AuthenticationException("Cannot authenticate and get an access token. Check the credentials.");
+
+            _token = null;
+        }
 
         protected abstract Task<string> GetAuthenticationToken(IRestClient client);
 

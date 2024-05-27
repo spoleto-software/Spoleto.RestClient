@@ -6,8 +6,8 @@ namespace Spoleto.RestClient
 {
     public record JsonRestRequest<TObj> : RestRequest<string>, IJsonRestRequest where TObj : class
     {
-        public JsonRestRequest(string uri, HttpMethod httpMethod = HttpMethod.Get, TObj? obj = null)
-            : base(uri, httpMethod, SerializationManager.Serialize(SerializationManager.DataFomat.Json, obj))
+        public JsonRestRequest(string uri, HttpMethod httpMethod = HttpMethod.Get, bool isMultipartFormData = false, TObj? obj = null)
+            : base(uri, httpMethod, isMultipartFormData, SerializationManager.Serialize(SerializationManager.DataFomat.Json, obj))
         {
         }
 
@@ -15,7 +15,12 @@ namespace Spoleto.RestClient
 
         public override HttpContent GetHttpContent()
         {
-            var content = new StringContent(Content, Encoding, ContentType);
+            HttpContent content = new StringContent(Content, Encoding, ContentType);
+
+            if (IsMultipartFormData)
+            {
+                content = new MultipartFormDataContent { { content } };
+            }
 
             return content;
         }

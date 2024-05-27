@@ -4,16 +4,19 @@ namespace Spoleto.RestClient
 {
     public abstract record RestRequest : IRestRequest
     {
-        protected RestRequest(string uri, HttpMethod httpMethod = HttpMethod.Get)
+        protected RestRequest(string uri, HttpMethod httpMethod = HttpMethod.Get, bool isMultipartFormData = false)
         {
             Uri = uri;
             HttpMethod = httpMethod;
+            IsMultipartFormData = isMultipartFormData;
             ContentType = GetContentType();
         }
 
         public string Uri { get; }
 
         public HttpMethod HttpMethod { get; }
+
+        public bool IsMultipartFormData { get; }
 
         public string ContentType { get; set; }
 
@@ -28,7 +31,7 @@ namespace Spoleto.RestClient
 
     public abstract record RestRequest<T> : RestRequest, IRestRequestGeneric<T> where T : class
     {
-        protected RestRequest(string uri, HttpMethod httpMethod = HttpMethod.Get, T? content = null)
+        protected RestRequest(string uri, HttpMethod httpMethod = HttpMethod.Get,bool isMultipartFormData=false, T? content = null)
             : base(uri, httpMethod)
         {
             Content = content;

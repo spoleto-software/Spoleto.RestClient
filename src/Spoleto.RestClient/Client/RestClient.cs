@@ -18,11 +18,11 @@ namespace Spoleto.RestClient
             _disposeHttpClient = disposeHttpClient;
         }
 
-        public virtual JsonRestRequest<TObj> CreateJsonRestRequest<TObj>(string uri, HttpMethod httpMethod = HttpMethod.Get, TObj? content = null) where TObj : class => new(uri, httpMethod, content);
+        public virtual JsonRestRequest<TObj> CreateJsonRestRequest<TObj>(string uri, HttpMethod httpMethod = HttpMethod.Get, bool isMultipartFormData = false, TObj? content = null) where TObj : class => new(uri, httpMethod, isMultipartFormData, content);
 
-        public virtual XmlRestRequest<TObj> CreateXmlRestRequest<TObj>(string uri, HttpMethod httpMethod = HttpMethod.Get, TObj? content = null) where TObj : class => new(uri, httpMethod, content);
+        public virtual XmlRestRequest<TObj> CreateXmlRestRequest<TObj>(string uri, HttpMethod httpMethod = HttpMethod.Get, bool isMultipartFormData = false, TObj? content = null) where TObj : class => new(uri, httpMethod, isMultipartFormData, content);
 
-        public virtual BinaryRestRequest CreateBinaryRestRequest(string uri, HttpMethod httpMethod = HttpMethod.Get, byte[]? content = null) => new(uri, httpMethod, content);
+        public virtual BinaryRestRequest CreateBinaryRestRequest(string uri, HttpMethod httpMethod = HttpMethod.Get, bool isMultipartFormData = false, byte[]? content = null) => new(uri, httpMethod, isMultipartFormData, content);
 
         public async Task<TextRestResponse> ExecuteAsStringAsync(RestRequest request, CancellationToken cancellationToken = default)
         {
