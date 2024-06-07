@@ -1,6 +1,6 @@
 ﻿namespace Spoleto.RestClient
 {
-    public enum HttpMethod
+    public enum RestHttpMethod
     {
         Get,
         Post,

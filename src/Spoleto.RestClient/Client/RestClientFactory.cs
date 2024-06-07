@@ -34,7 +34,7 @@ namespace Spoleto.RestClient
         /// <summary>
         /// Creates the RestClient instance.
         /// </summary>
-        /// <returns>Instance of <see cref="RestClient"/>.</returns>
+        /// <returns>Instance of <see cref="RestHttpClient"/>.</returns>
         public IRestClient Build()
         {
             if (_client == null)
@@ -43,7 +43,7 @@ namespace Spoleto.RestClient
                 _disposeHttpClient = true;
             }
 
-            return new RestClient(_client, _authenticator, _options, _disposeHttpClient);
+            return new RestHttpClient(_client, _authenticator, _options, _disposeHttpClient);
         }
     }
 }

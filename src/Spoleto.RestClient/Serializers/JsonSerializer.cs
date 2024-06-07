@@ -10,6 +10,13 @@ namespace Spoleto.RestClient.Serializers
                 return false;
 
             var content = textRestResponse?.Content;
+            return IsJson(content);
+        }
+
+        public bool CanDeserialize(string raw) => IsJson(raw);
+
+        private static bool IsJson(string? content)
+        {
             if (content == null)
             {
                 return false;
@@ -30,14 +37,9 @@ namespace Spoleto.RestClient.Serializers
             return JsonHelper.FromJson<T>(textRestResponse.Content);
         }
 
-        public bool CanSerialize(RestRequest restRequest) => restRequest is IJsonRestRequest;
-
-        public string? Serialize<T>(RestRequest restRequest) where T : class
+        public T Deserialize<T>(string raw) where T : class
         {
-            if (restRequest is not JsonRestRequest<T> jsonRestRequest)
-                return null;
-
-            return SerializeToJson(jsonRestRequest.Content);
+            return JsonHelper.FromJson<T>(raw);
         }
 
         public string? Serialize<T>(T? value) where T : class => SerializeToJson(value);

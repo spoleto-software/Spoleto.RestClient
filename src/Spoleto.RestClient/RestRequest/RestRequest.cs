@@ -2,41 +2,50 @@
 
 namespace Spoleto.RestClient
 {
-    public abstract record RestRequest : IRestRequest
+    public record RestRequest : IRestRequest
     {
-        protected RestRequest(string uri, HttpMethod httpMethod = HttpMethod.Get, bool isMultipartFormData = false)
+        private readonly HttpContent? _content;
+        
+        private readonly Dictionary<string, string> _headers = [];
+
+        public RestRequest(RestHttpMethod httpMethod, string uri)
+            : this(httpMethod, uri, null)
         {
-            Uri = uri;
-            HttpMethod = httpMethod;
-            IsMultipartFormData = isMultipartFormData;
-            ContentType = GetContentType();
         }
 
+        public RestRequest(RestHttpMethod httpMethod, string uri, HttpContent? content = null)
+        {
+            Method = httpMethod;
+            Uri = uri;
+            _content = content;
+        }
+
+        public RestHttpMethod Method { get; }
+
         public string Uri { get; }
-
-        public HttpMethod HttpMethod { get; }
-
-        public bool IsMultipartFormData { get; }
-
-        public string ContentType { get; set; }
 
         public virtual Encoding Encoding { get; set; } = Encoding.UTF8;
 
         public bool ThrowIfHttpError { get; set; } = true;
 
-        protected abstract string GetContentType();
+        public Dictionary<string, string> Headers => _headers;
 
-        public abstract HttpContent GetHttpContent();
-    }
+        public HttpContent? GetHttpContent() => _content;
 
-    public abstract record RestRequest<T> : RestRequest, IRestRequestGeneric<T> where T : class
-    {
-        protected RestRequest(string uri, HttpMethod httpMethod = HttpMethod.Get,bool isMultipartFormData=false, T? content = null)
-            : base(uri, httpMethod)
+        public HttpRequestMessage ToHttpRequest()
         {
-            Content = content;
-        }
+            var request = new HttpRequestMessage(Method.ConvertToHttpMethod(), Uri);
+            if (_content != null)
+            {
+                request.Content = _content;
+            }
 
-        public T? Content { get; set; }
+            foreach (var header in _headers)
+            {
+                request.Headers.TryAddWithoutValidation(header.Key, header.Value);
+            }
+
+            return request;
+        }
     }
 }

@@ -4,11 +4,11 @@
     {
         bool CanDeserialize(IRestResponse restResponse);
 
+        bool CanDeserialize(string raw);
+
         T Deserialize<T>(IRestResponse restResponse) where T : class;
 
-        bool CanSerialize(RestRequest restRequest);
-
-        string? Serialize<T>(RestRequest restRequest) where T : class;
+        T Deserialize<T>(string raw) where T : class;
 
         string? Serialize<T>(T? obj) where T : class;
     }

@@ -12,7 +12,7 @@
                 var bytes = await responseMessage.Content.ReadAsByteArrayAsync();
 #endif
                 var response = new T();
-                ((IBinaryRestRequest)response).Content = bytes;
+                ((IBinaryRestResponse)response).Content = bytes;
 
                 return response;
             }
@@ -22,7 +22,7 @@
 #if NET
                 var content = await responseMessage.Content.ReadAsStringAsync(cancellationToken);
 #else
-            var content = await responseMessage.Content.ReadAsStringAsync();
+                var content = await responseMessage.Content.ReadAsStringAsync();
 #endif
 
                 var response = new T();

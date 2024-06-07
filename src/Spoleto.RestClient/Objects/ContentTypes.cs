@@ -1,6 +1,4 @@
-﻿using System.Net.Mime;
-
-namespace Spoleto.RestClient
+﻿namespace Spoleto.RestClient
 {
     /// <summary>
     /// Content types.

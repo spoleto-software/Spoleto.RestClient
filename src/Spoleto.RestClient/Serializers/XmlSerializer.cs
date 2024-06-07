@@ -8,6 +8,14 @@
                 return false;
 
             var content = textRestResponse?.Content;
+
+            return IsXml(content);
+        }
+
+        public bool CanDeserialize(string raw) => IsXml(raw);
+
+        private static bool IsXml(string? content)
+        {
             if (content == null)
             {
                 return false;
@@ -28,17 +36,12 @@
             return DeserializeFromXml<T>(textRestResponse.Content);
         }
 
-        public bool CanSerialize(RestRequest restRequest) => restRequest is IJsonRestRequest;
+        public T Deserialize<T>(string raw) where T : class
+        {
+            return DeserializeFromXml<T>(raw);
+        }
 
         public string? Serialize<T>(T? value) where T : class => SerializeToXml(value);
-
-        public string? Serialize<T>(RestRequest restRequest) where T : class
-        {
-            if (restRequest is not IXmlRestRequest xmlRestRequest)
-                return null;
-
-            return SerializeToXml(xmlRestRequest.Content);
-        }
 
         private static T? DeserializeFromXml<T>(string xml) where T : class
         {

@@ -3,12 +3,10 @@ namespace Spoleto.RestClient
 {
     public interface IRestRequest
     {
-        HttpMethod HttpMethod { get; }
+        RestHttpMethod Method { get; }
         
-        bool IsMultipartFormData { get; }
-
         string Uri { get; }
 
-        HttpContent GetHttpContent();
+        HttpContent? GetHttpContent();
     }
 }

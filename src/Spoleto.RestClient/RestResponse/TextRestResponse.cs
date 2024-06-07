@@ -1,6 +1,4 @@
-﻿using System.Text;
-
-namespace Spoleto.RestClient
+﻿namespace Spoleto.RestClient
 {
     public record TextRestResponse : RestResponse<string>, ITextRestResponse
     {
