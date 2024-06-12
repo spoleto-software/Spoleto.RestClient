@@ -149,7 +149,7 @@ public async Task<Order> CreateOrderAsync(OrderRequest orderRequest)
         .WithJsonContent(orderRequest)
         .Build();
 
-    var deliveryOrder = await _masterPostClient.ExecuteAsync<DeliveryOrder>(restRequest).ConfigureAwait(false);
+    var deliveryOrder = await _restClient.ExecuteAsync<DeliveryOrder>(restRequest).ConfigureAwait(false);
     return deliveryOrder;
 }
 ```
@@ -215,11 +215,11 @@ The default JSON serializer is based on `System.Text.Json`, the defaul XML seria
 Methods of `SerializationManager`:
 
 ```csharp
-    public static T Deserialize<T>(IRestResponse restResponse) where T : class;
+public static T Deserialize<T>(IRestResponse restResponse) where T : class;
 
-    public static T Deserialize<T>(string raw);
+public static T Deserialize<T>(string raw);
 	
-	public static string? Serialize<T>(DataFomat dataFormat, T? value) where T : class;
+public static string? Serialize<T>(DataFomat dataFormat, T? value) where T : class;
 ```
 
 ### Adjusting SerializationManager
@@ -227,7 +227,7 @@ Methods of `SerializationManager`:
 You can easily customize the `SerializationManager` by modifying the `Serializers` property:
 
 ```C#
-	public static SerializerCollection Serializers { get; }
+public static SerializerCollection Serializers { get; }
 ```
 
 ### Example: Replacing the Default JSON Serializer
