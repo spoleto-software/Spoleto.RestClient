@@ -10,6 +10,11 @@ namespace Spoleto.RestClient
         private readonly RestClientOptions _options;//todo:
         private readonly bool _disposeHttpClient;
 
+        public RestHttpClient(IAuthenticator? authenticator = null, RestClientOptions? options = null)
+            : this(new HttpClient(), authenticator, options, true)
+        {
+        }
+
         public RestHttpClient(HttpClient httpClient, IAuthenticator? authenticator = null, RestClientOptions? options = null, bool disposeHttpClient = false)
         {
             _httpClient = httpClient;
@@ -59,7 +64,7 @@ namespace Spoleto.RestClient
 
             var restResponse = await responseMessage.ToRestResponse<T>(cancellationToken).ConfigureAwait(false);
 
-            if (responseMessage.IsSuccessStatusCode)
+            if (restResponse.IsSuccessStatusCode)
             {
                 return restResponse;
             }
@@ -98,10 +103,8 @@ namespace Spoleto.RestClient
                 }
             }
 
-            return default;
+            return restResponse;
         }
-
-
 
         #region IDisposable
         bool _disposed;

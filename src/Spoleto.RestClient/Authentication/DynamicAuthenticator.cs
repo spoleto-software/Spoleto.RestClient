@@ -1,5 +1,4 @@
 ﻿using System.Net;
-using System.Net.Http.Headers;
 using System.Security.Authentication;
 
 namespace Spoleto.RestClient.Authentication
@@ -19,6 +18,8 @@ namespace Spoleto.RestClient.Authentication
         }
 
         protected string TokenType => _tokenType;
+
+        protected string? Token => _token;
 
         public sealed override async Task Authenticate(IRestClient client, HttpRequestMessage request)
         {
@@ -48,7 +49,7 @@ namespace Spoleto.RestClient.Authentication
 
             if (_token != null)
             {
-                request.Headers.Authorization = new AuthenticationHeaderValue(_tokenType, _token);
+                AddAuthorizationHeaders(request, _tokenType, _token);
             }
         }
 

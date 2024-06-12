@@ -1,5 +1,6 @@
 ﻿namespace Spoleto.RestClient5.Tests
 {
+    //todo: make some tests
     public class Tests
     {
         [SetUp]

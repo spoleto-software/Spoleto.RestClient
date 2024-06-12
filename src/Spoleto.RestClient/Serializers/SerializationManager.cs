@@ -1,6 +1,6 @@
 ﻿namespace Spoleto.RestClient.Serializers
 {
-    public static partial class SerializationManager
+    public static class SerializationManager
     {
         static SerializationManager()
         {
