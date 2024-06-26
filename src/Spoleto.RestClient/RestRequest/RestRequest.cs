@@ -8,6 +8,11 @@ namespace Spoleto.RestClient
         
         private readonly Dictionary<string, string> _headers = [];
 
+        public RestRequest(RestHttpMethod httpMethod)
+            : this(httpMethod, string.Empty, null)
+        {
+        }
+
         public RestRequest(RestHttpMethod httpMethod, string uri)
             : this(httpMethod, uri, null)
         {
@@ -15,6 +20,9 @@ namespace Spoleto.RestClient
 
         public RestRequest(RestHttpMethod httpMethod, string uri, HttpContent? content = null)
         {
+            if (uri == null)
+                throw new ArgumentNullException(nameof(uri));
+
             Method = httpMethod;
             Uri = uri;
             _content = content;

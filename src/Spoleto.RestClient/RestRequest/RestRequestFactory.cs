@@ -18,10 +18,21 @@ namespace Spoleto.RestClient
         private readonly Dictionary<string, string> _headers = [];
 
         /// <summary>
+        /// Constructor with parameter.
+        /// </summary>
+        public RestRequestFactory(RestHttpMethod method)
+            : this(method, string.Empty)
+        {
+        }
+
+        /// <summary>
         /// Constructor with parameters.
         /// </summary>
         public RestRequestFactory(RestHttpMethod method, string requestUri)
         {
+            if (requestUri == null)
+                throw new ArgumentNullException(nameof(requestUri), "Request URI is required");
+
             _method = method;
             _requestUri = requestUri;
         }
@@ -180,11 +191,6 @@ namespace Spoleto.RestClient
 
         public RestRequest Build()
         {
-            if (string.IsNullOrEmpty(_requestUri))
-            {
-                throw new InvalidOperationException("Request URI is required");
-            }
-
             var uri = _requestUri;
             if (!string.IsNullOrEmpty(_query))
             {
