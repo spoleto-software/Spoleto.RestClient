@@ -60,7 +60,7 @@ namespace Spoleto.RestClient
                 await _authenticator.Authenticate(this, requestMessage).ConfigureAwait(false);
             }
 
-            using var responseMessage = await _httpClient.SendAsync(requestMessage, cancellationToken);
+            using var responseMessage = await _httpClient.SendAsync(requestMessage, cancellationToken).ConfigureAwait(false);
 
             var restResponse = await responseMessage.ToRestResponse<T>(cancellationToken).ConfigureAwait(false);
 

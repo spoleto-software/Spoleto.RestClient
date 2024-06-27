@@ -16,7 +16,7 @@
 #if NET
                 var bytes = await responseMessage.Content.ReadAsByteArrayAsync(cancellationToken).ConfigureAwait(false);
 #else
-                var bytes = await responseMessage.Content.ReadAsByteArrayAsync();
+                var bytes = await responseMessage.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
 #endif
                 ((IBinaryRestResponse)response).Content = bytes;
 
@@ -26,9 +26,9 @@
             {
 
 #if NET
-                var content = await responseMessage.Content.ReadAsStringAsync(cancellationToken);
+                var content = await responseMessage.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
 #else
-                var content = await responseMessage.Content.ReadAsStringAsync();
+                var content = await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
 #endif
                 ((ITextRestResponse)response).Content = content;
 
