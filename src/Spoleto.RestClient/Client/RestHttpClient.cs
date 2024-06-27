@@ -81,7 +81,14 @@ namespace Spoleto.RestClient
             {
                 var errorResult = default(string);
                 if (restResponse is ITextRestResponse textRestResponse)
+                {
                     errorResult = textRestResponse.Content;
+                }
+                else if (restResponse is IBinaryRestResponse binaryRestResponse
+                     && binaryRestResponse.Content != null)
+                {
+                    errorResult = restResponse.Encoding.GetString(binaryRestResponse.Content);
+                }
 
                 if (!String.IsNullOrEmpty(errorResult))
                 {

@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Text;
 
 namespace Spoleto.RestClient
 {
@@ -15,9 +16,14 @@ namespace Spoleto.RestClient
         HttpStatusCode StatusCode { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of the Content-Type content header on an HTTP response.
+        /// Gets or sets the value of the MediaType from Content-Type content header on an HTTP response.
         /// </summary>
         string? ContentType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the value of the Encoding from Content-Type content header on an HTTP response or default UTF-8.
+        /// </summary>
+        Encoding Encoding { get; set; }
     }
 
     public interface IRestResponse<T> : IRestResponse

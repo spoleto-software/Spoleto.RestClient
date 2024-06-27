@@ -1,4 +1,6 @@
-﻿namespace Spoleto.RestClient
+﻿using System.Text;
+
+namespace Spoleto.RestClient
 {
     public static class ResponseExtensions
     {
@@ -10,6 +12,15 @@
                 StatusCode = responseMessage.StatusCode,
                 ContentType = responseMessage.Content?.Headers.ContentType?.MediaType
             };
+
+            if (!String.IsNullOrEmpty(responseMessage.Content?.Headers.ContentType?.CharSet))
+            {
+                var encoding = Encoding.GetEncoding(responseMessage.Content.Headers.ContentType.CharSet);
+                if (encoding != null)
+                {
+                    response.Encoding = encoding;
+                }
+            }
 
             if (typeof(IBinaryRestResponse).IsAssignableFrom(typeof(T)))
             {

@@ -16,8 +16,6 @@ namespace Spoleto.RestClient
 
         public TContent Content { get; set; }
 
-        public virtual Encoding Encoding { get; set; } = Encoding.UTF8;
-
         /// <summary>
         /// Gets or sets a value that indicates if the HTTP response was successful.
         /// </summary>
@@ -29,8 +27,13 @@ namespace Spoleto.RestClient
         public HttpStatusCode StatusCode { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of the Content-Type content header on an HTTP response.
+        /// Gets or sets the value of the MediaType from Content-Type content header on an HTTP response.
         /// </summary>
         public string? ContentType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the value of the Encoding from Content-Type content header on an HTTP response or default UTF-8.
+        /// </summary>
+        public virtual Encoding Encoding { get; set; } = Encoding.UTF8;
     }
 }
