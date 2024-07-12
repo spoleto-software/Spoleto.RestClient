@@ -55,7 +55,7 @@ namespace Spoleto.RestClient.Authentication
 
         public virtual Task<bool> IsExpired(HttpResponseMessage response) => Task.FromResult(response.StatusCode == HttpStatusCode.Unauthorized);
 
-        public void SetExpired()
+        public virtual void SetExpired()
         {
             if (_token == null)
                 throw new AuthenticationException("Cannot authenticate and get an access token. Check the credentials.");

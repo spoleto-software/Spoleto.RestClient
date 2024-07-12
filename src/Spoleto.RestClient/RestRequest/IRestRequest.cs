@@ -11,6 +11,10 @@ namespace Spoleto.RestClient
 
         Encoding Encoding { get; set; }
 
+        bool ThrowIfHttpError { get; set; }
+
+        Dictionary<string, string> Headers { get; }
+
         HttpContent? GetHttpContent();
     }
 }

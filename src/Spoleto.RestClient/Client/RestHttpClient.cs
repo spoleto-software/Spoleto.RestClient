@@ -46,6 +46,11 @@ namespace Spoleto.RestClient
                 throw new ArgumentNullException(nameof(restResponse));
             }
 
+            if (!restResponse.IsSuccessStatusCode)
+            {
+                throw new Exception($"Unsuccesful response with {nameof(restResponse.StatusCode)} = {restResponse.StatusCode}");
+            }
+
             var objectResult = SerializationManager.Deserialize<T>(restResponse);
 
             return objectResult;
@@ -62,19 +67,19 @@ namespace Spoleto.RestClient
 
             using var responseMessage = await _httpClient.SendAsync(requestMessage, cancellationToken).ConfigureAwait(false);
 
-            var restResponse = await responseMessage.ToRestResponse<T>(cancellationToken).ConfigureAwait(false);
-
-            if (restResponse.IsSuccessStatusCode)
-            {
-                return restResponse;
-            }
-
             if (_authenticator is IDynamicAuthenticator dynamicAuthenticator
                 && await dynamicAuthenticator.IsExpired(responseMessage).ConfigureAwait(false))
             {
                 dynamicAuthenticator.SetExpired();//todo: если новый токен снова неверный, то нужна ошибка
 
-                return await InvokeAsync<T>(request, cancellationToken).ConfigureAwait(false);
+                var result = await InvokeAsync<T>(request, cancellationToken).ConfigureAwait(false);
+            }
+
+            var restResponse = await responseMessage.ToRestResponse<T>(cancellationToken).ConfigureAwait(false);
+
+            if (restResponse.IsSuccessStatusCode)
+            {
+                return restResponse;
             }
 
             if (request.ThrowIfHttpError)

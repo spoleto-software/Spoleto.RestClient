@@ -15,6 +15,7 @@ namespace Spoleto.RestClient
 
         private string? _query;
         private HttpContent? _content;
+        private bool? _throwIfHttpError;
         private readonly Dictionary<string, string> _headers = [];
 
         /// <summary>
@@ -189,6 +190,13 @@ namespace Spoleto.RestClient
             return WithHeader("Authorization", $"Bearer {token}");
         }
 
+        public RestRequestFactory ThrowIfHttpError(bool throwIfHttpError)
+        {
+            _throwIfHttpError = throwIfHttpError;
+
+            return this;
+        }
+
         public RestRequest Build()
         {
             var uri = _requestUri;
@@ -200,6 +208,9 @@ namespace Spoleto.RestClient
             }
 
             var request = new RestRequest(_method, uri, _content);
+            if (_throwIfHttpError != null)
+                request.ThrowIfHttpError = _throwIfHttpError.Value;
+
             foreach (var header in _headers)
             {
                 request.Headers.Add(header.Key, header.Value);
