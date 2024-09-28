@@ -73,6 +73,8 @@ namespace Spoleto.RestClient
                 dynamicAuthenticator.SetExpired();//todo: если новый токен снова неверный, то нужна ошибка
 
                 var result = await InvokeAsync<T>(request, cancellationToken).ConfigureAwait(false);
+
+                return result;
             }
 
             var restResponse = await responseMessage.ToRestResponse<T>(cancellationToken).ConfigureAwait(false);
