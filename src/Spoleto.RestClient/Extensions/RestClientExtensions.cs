@@ -13,7 +13,7 @@ namespace Spoleto.RestClient
                 throw new ArgumentNullException(nameof(restResponse));
             }
 
-            if (restResponse.StatusCode == System.Net.HttpStatusCode.NotFound
+            if (client.NotFound(restResponse)
                 && !client.Options.ThrowExceptionIfNotFound)
             {
                 return (default, restResponse.Content);

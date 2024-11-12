@@ -24,6 +24,11 @@ namespace Spoleto.RestClient
         /// Gets or sets the value of the Encoding from Content-Type content header on an HTTP response or default UTF-8.
         /// </summary>
         Encoding Encoding { get; set; }
+
+        /// <summary>
+        /// Gets the content.
+        /// </summary>
+        object? GetContent();
     }
 
     public interface IRestResponse<T> : IRestResponse

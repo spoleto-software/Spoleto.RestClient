@@ -25,6 +25,12 @@ namespace Spoleto.RestClient
 
         public RestClientOptions Options => _options;
 
+        /// <summary>
+        /// The requested resource does not exists on the server.
+        /// </summary>
+        public virtual bool NotFound(IRestResponse restResponse)
+            => restResponse.StatusCode == System.Net.HttpStatusCode.NotFound;
+
         public async Task<TextRestResponse> ExecuteAsStringAsync(RestRequest request, CancellationToken cancellationToken = default)
         {
             var restResponse = await InvokeAsync<TextRestResponse>(request, cancellationToken).ConfigureAwait(false);
@@ -48,7 +54,7 @@ namespace Spoleto.RestClient
                 throw new ArgumentNullException(nameof(restResponse));
             }
 
-            if (restResponse.StatusCode == System.Net.HttpStatusCode.NotFound
+            if (NotFound(restResponse)
                 && !_options.ThrowExceptionIfNotFound)
             {
                 return default;
@@ -98,7 +104,7 @@ namespace Spoleto.RestClient
                 return restResponse;
             }
 
-            if (restResponse.StatusCode == System.Net.HttpStatusCode.NotFound
+            if (NotFound(restResponse)
                 && !_options.ThrowExceptionIfNotFound)
             {
                 return restResponse;
