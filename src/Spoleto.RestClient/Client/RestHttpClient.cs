@@ -23,6 +23,8 @@ namespace Spoleto.RestClient
             _disposeHttpClient = disposeHttpClient;
         }
 
+        public RestClientOptions Options => _options;
+
         public async Task<TextRestResponse> ExecuteAsStringAsync(RestRequest request, CancellationToken cancellationToken = default)
         {
             var restResponse = await InvokeAsync<TextRestResponse>(request, cancellationToken).ConfigureAwait(false);
@@ -37,7 +39,7 @@ namespace Spoleto.RestClient
             return restResponse;
         }
 
-        public async Task<T> ExecuteAsync<T>(RestRequest request, CancellationToken cancellationToken = default) where T : class
+        public async Task<T?> ExecuteAsync<T>(RestRequest request, CancellationToken cancellationToken = default) where T : class
         {
             var restResponse = await InvokeAsync<TextRestResponse>(request, cancellationToken).ConfigureAwait(false);
 
@@ -46,9 +48,21 @@ namespace Spoleto.RestClient
                 throw new ArgumentNullException(nameof(restResponse));
             }
 
+            if (restResponse.StatusCode == System.Net.HttpStatusCode.NotFound
+                && !_options.ThrowExceptionIfNotFound)
+            {
+                return default;
+            }
+
             if (!restResponse.IsSuccessStatusCode)
             {
                 throw new Exception($"Unsuccesful response with {nameof(restResponse.StatusCode)} = {restResponse.StatusCode}");
+            }
+
+
+            if (string.IsNullOrEmpty(restResponse.Content))
+            {
+                return default;
             }
 
             var objectResult = SerializationManager.Deserialize<T>(restResponse);
@@ -80,6 +94,12 @@ namespace Spoleto.RestClient
             var restResponse = await responseMessage.ToRestResponse<T>(cancellationToken).ConfigureAwait(false);
 
             if (restResponse.IsSuccessStatusCode)
+            {
+                return restResponse;
+            }
+
+            if (restResponse.StatusCode == System.Net.HttpStatusCode.NotFound
+                && !_options.ThrowExceptionIfNotFound)
             {
                 return restResponse;
             }
